@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.auth.controllers.models.GenericResponse;
-import com.app.errors.exceptions.AppException;
 import com.app.errors.exceptions.InvalidParametersException;
+import com.app.errors.utils.ExceptionUtil;
 import com.app.persistence.entities.security.CTUser;
 import com.app.persistence.entities.security.support.RoleEnum;
 import com.app.persistence.entities.security.support.RoleEnumAttributeConverter;
@@ -57,10 +57,9 @@ public class UserController {
 			return GenericResponse.ok( list );
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error buscando la entidad. ", e);
-			}
-			throw e;
+			log.error("Error buscando la informacion. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	
@@ -79,10 +78,9 @@ public class UserController {
 			return GenericResponse.ok( user );
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error buscando la entidad. ", e);
-			}
-			throw e;
+			log.error("Error buscando la informacion. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	
@@ -107,10 +105,9 @@ public class UserController {
 			return GenericResponse.ok();
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error guardando la entidad. ", e);
-			}
-			throw e;
+			log.error("Error guardando la informacion. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	
@@ -135,10 +132,9 @@ public class UserController {
 			return GenericResponse.ok();
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error actualizando la entidad. ", e);
-			}
-			throw e;
+			log.error("Error actualizando la informacion. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	
@@ -157,10 +153,9 @@ public class UserController {
 			return GenericResponse.ok();
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error actualizando la entidad. ", e);
-			}
-			throw e;
+			log.error("Error actualizando la informacion. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	
@@ -179,10 +174,9 @@ public class UserController {
 			return GenericResponse.ok();
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error eliminando la entidad. ", e);
-			}
-			throw e;
+			log.error("Error eliminando la informacion. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	

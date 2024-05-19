@@ -16,8 +16,8 @@ import com.app.auth.controller.model.ResponseLogin;
 import com.app.auth.controllers.models.GenericResponse;
 import com.app.auth.services.AuthenticationService;
 import com.app.auth.services.JwtService;
-import com.app.errors.exceptions.AppException;
 import com.app.errors.exceptions.InvalidParametersException;
+import com.app.errors.utils.ExceptionUtil;
 import com.app.security.models.auth.AuthenticationRequest;
 
 import jakarta.validation.Valid;
@@ -60,10 +60,9 @@ public class AuthenticationController {
 	        return GenericResponse.ok( responseDto );
 		}
 		catch (Exception e) {
-			if( !(e instanceof AppException) ) {
-				log.error("Error al autenticar al usuario. ", e);
-			}
-			throw e;
+			log.error("Error al autenticar al usuario. ", e);
+			ExceptionUtil.handleException( e );
+			return null;
 		}
 	}
 	

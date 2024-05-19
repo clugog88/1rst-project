@@ -12,6 +12,7 @@ import com.app.auth.controllers.models.GenericResponse;
 import com.app.errors.constants.ErrorMessages;
 import com.app.errors.exceptions.BadCredentialsException;
 import com.app.errors.exceptions.EntityNotFoundException;
+import com.app.errors.exceptions.GeneralException;
 import com.app.errors.exceptions.InvalidParametersException;
 import com.app.errors.exceptions.UniqueEntityDuplicatedException;
 import com.app.errors.exceptions.UsernameNotFoundException;
@@ -23,52 +24,58 @@ import com.app.errors.exceptions.UsernameNotFoundException;
 @RestControllerAdvice
 public class ResponseEntityExceptionHandlerImpl extends ResponseEntityExceptionHandler {
 	
-	@ExceptionHandler({ BadCredentialsException.class })
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED )
+	@ExceptionHandler({ BadCredentialsException.class })
     public GenericResponse<Object> handleBadCredentialsException(Exception ex, WebRequest request) {
     	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__AccessDenied );
     }
 	
-	@ExceptionHandler({ UsernameNotFoundException.class })
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED )
+	@ExceptionHandler({ UsernameNotFoundException.class })
     public GenericResponse<Object> handleUsernameNotFoundException(Exception ex, WebRequest request) {
     	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__AccessDenied );
     }
 	
-	@ExceptionHandler({ EntityNotFoundException.class })
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler({ EntityNotFoundException.class })
     public GenericResponse<Object> handleEntityNotFoundException(Exception ex, WebRequest request) {
     	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__EntityNotFound );
     }
 	
-	@ExceptionHandler({ UniqueEntityDuplicatedException.class })
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST )
+	@ExceptionHandler({ UniqueEntityDuplicatedException.class })
     public GenericResponse<Object> handleUniqueEntityDuplicatedException(Exception ex, WebRequest request) {
     	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__UniqueEntityDuplicated );
     }
 	
-	@ExceptionHandler({ InvalidParametersException.class })
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST )
+	@ExceptionHandler({ InvalidParametersException.class })
     public GenericResponse<Object> handleInvalidParametersException(Exception ex, WebRequest request) {
     	return GenericResponse.error( ex.getMessage() );
     }
 	
-	@ExceptionHandler({ AccessDeniedException.class })
 	@ResponseStatus(value = HttpStatus.FORBIDDEN )
+	@ExceptionHandler({ AccessDeniedException.class })
     public GenericResponse<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
     	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__AccessDenied );
     }
 	
-	@ExceptionHandler({ NullPointerException.class })
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR )
-    public GenericResponse<Object> handleNullPointerExceptions(Exception e) {
+	@ExceptionHandler({ NullPointerException.class })
+    public GenericResponse<Object> handleNullPointerExceptions(Exception e, WebRequest request) {
 		return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__GeneralError );
     }
 	
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR )
-    public GenericResponse<Object> handleExceptions(Exception e) {
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR )
+    @ExceptionHandler(GeneralException.class)
+    public GenericResponse<Object> handleGeneralExceptions(Exception e, WebRequest request) {
     	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__GeneralError );
     }
-    
+	
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR )
+    @ExceptionHandler(Exception.class)
+    public GenericResponse<Object> handleExceptions(Exception e, WebRequest request) {
+    	return GenericResponse.error( ErrorMessages.ERROR_MESSAGE__GeneralError );
+    }
+	
 }
